@@ -41,7 +41,7 @@ export default class SearchResults extends React.Component {
           </View>
           <ScrollView>
             {Object.keys(potato).map( (recipe, index) => {
-              return <View key={recipe + index}>
+              return <View style={styles.recipeCard} key={recipe + index}>
                 <Text>{recipe}</Text>
                 <Text>{potato[recipe]['id']}</Text>
                 <Image style={{width : 312, height: 231}} source={{uri: potato[recipe]['image_url']}} />
