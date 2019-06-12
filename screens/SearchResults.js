@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import styles from './styles/styles.js'
 
-const api = 'https://aqueous-peak-96773.herokuapp.com/api/v1/'
+const api = 'https://recipe-reader-rails.herokuapp.com/api/v1/'
 
 export default class SearchResults extends React.Component {
   constructor(props) {
@@ -27,7 +27,6 @@ export default class SearchResults extends React.Component {
   render() {
     const { navigation } = this.props
     const response = fetch(api+'spoon/burger')
-      .then( res => res.json() )
       .then( console.log )
     let text = navigation.getParam('text', 'nothing')
     return (

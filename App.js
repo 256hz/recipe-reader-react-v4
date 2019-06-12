@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Platform, View } from 'react-native';
+import AppNavigator from './navigation/AppNavigator.js'
 
 export default function App() {
   return (
