@@ -4,20 +4,24 @@ import {
   Button,
   Text,
   View,
+  Image,
+  ScrollView
 } from 'react-native';
+import potato from '../assets/search-results-potato.json'
 import styles from './styles/styles.js'
+// import { ScrollView } from 'react-native-gesture-handler';
 
 const api = 'https://recipe-reader-rails.herokuapp.com/api/v1/'
 
 export default class SearchResults extends React.Component {
   constructor(props) {
-    super(props)  
+    super(props)
   }
 
   search = () => {
-    // let query = props.navigation.state.params.text
-    fetch(api + 'spoon')
+    fetch(api + 'spoon/' + query)
       .then( res => res.json() )
+      .then( json => {return json})
   }
   
   submitBack = () => {
@@ -25,17 +29,26 @@ export default class SearchResults extends React.Component {
   }
 
   render() {
-    const { navigation } = this.props
-    const response = fetch(api+'spoon/burger')
-      .then( console.log )
-    let text = navigation.getParam('text', 'nothing')
+    // const { navigation } = this.props
+    let query = this.props.navigation.state.params.text.toLowerCase()
+    // const response = search(query)
     return (
       <View
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
           <View>
-            <Text style={styles.titleText}>Searching for {response['hi']} </Text>
+            <Text style={styles.resultsTitleText}>Results for {query}: </Text>
           </View>
+          <ScrollView>
+            {Object.keys(potato).map( (recipe, index) => {
+              return <View key={recipe + index}>
+                <Text>{recipe}</Text>
+                <Text>{potato[recipe]['id']}</Text>
+                <Image style={{width : 312, height: 231}} source={{uri: potato[recipe]['image_url']}} />
+                <Text>Ready in {potato[recipe]['readyInMinutes']} min</Text>
+              </View>
+            })}
+          </ScrollView>
           <View>
             <Button
               onPress={this.submitBack}
@@ -49,4 +62,5 @@ export default class SearchResults extends React.Component {
     );
   }
 }
+
 

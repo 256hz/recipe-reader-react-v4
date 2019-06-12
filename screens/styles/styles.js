@@ -19,6 +19,24 @@ export default StyleSheet.create({
         },
     }),
   },
+  resultsTitleText: {
+    fontSize: 36,
+    textAlign: 'center',
+    marginTop: 25,
+    color: '#e6df44',
+    backgroundColor: "#7caa2d",
+    // ...Platform.select({
+    //     ios: {
+    //     shadowColor: 'black',
+    //     shadowOffset: { width: 0, height: -3 },
+    //     shadowOpacity: 0.1,
+    //     shadowRadius: 3,
+    //     },
+    //     android: {
+    //     elevation: 20,
+    //     },
+    // }),
+  },
   searchInput: {
       height: 40, 
       backgroundColor: 'white'
