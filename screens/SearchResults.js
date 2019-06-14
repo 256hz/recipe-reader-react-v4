@@ -65,8 +65,7 @@ export default class SearchResults extends React.Component {
             <Button
               onPress={this.submitBack}
               title={"Back"}
-              color={"#7caa2d"}
-              width={10}
+              style={styles.navButton}
               accessibilityLabel="Back"
             />
           </View>

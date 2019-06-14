@@ -12,14 +12,14 @@ export default class ButtonModal extends React.Component {
   render() {
     return(
       <Modal transparent={true} animationType={'none'} visible={true}>
-      <View style={styles.buttonModal}>
-        <TouchableOpacity style={{...styles.buttonFwdBack, alignSelf: "flex-start"}} onPress={this.props.sentencePrev}>
-          <Text style={{textAlign: 'center'}}>{'<'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{...styles.buttonFwdBack, alignSelf: "flex-end"}} onPress={this.props.sentenceNext}>
-          <Text style={{textAlign: 'center'}}>{'>'}</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.buttonModal}>
+          <TouchableOpacity style={{...styles.buttonFwdBack}} onPress={this.props.sentencePrev}>
+            <Text style={{textAlign: 'center'}}>{'<'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{...styles.buttonFwdBack}} onPress={this.props.sentenceNext}>
+            <Text style={{textAlign: 'center'}}>{'>'}</Text>
+          </TouchableOpacity>
+        </View>
       </Modal>
     )
   }

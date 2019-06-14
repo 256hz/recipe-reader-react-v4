@@ -2,6 +2,12 @@ import React, {StyleSheet, Platform} from 'react-native'
 import { hidden } from 'ansi-colors';
 
 export default StyleSheet.create({
+
+    container: {
+        flex: 1,
+        backgroundColor: '#f8d621',
+    },
+
     titleText: {
         fontSize: 36,
         textAlign: 'center',
@@ -29,6 +35,10 @@ export default StyleSheet.create({
         backgroundColor: "#7caa2d",
     },
 
+    navButton: {
+        color: "#4fb177",
+    },
+
     recipeCard: {
         padding: 5,
         margin: 5,
@@ -40,16 +50,17 @@ export default StyleSheet.create({
     },
 
     buttonModal: {
-        justifyContent: 'center',
         flex: 1,
         flexDirection: 'row',
-        flexWrap: 'wrap',
+        alignItems: "center",
+        justifyContent: "space-between", 
     },
 
     buttonFwdBack: {
         width: 50, 
         height: 50, 
         backgroundColor: 'rgba(255,255,255,0.4)',
+        color: "#f8cb03",
         borderRadius: 25,
         overflow: 'hidden',
         justifyContent: 'center',
@@ -59,6 +70,7 @@ export default StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: "space-evenly",
         flexWrap: 'wrap',
         padding: 5,
         marginTop: 30,
@@ -68,8 +80,10 @@ export default StyleSheet.create({
         },
 
     ingredContainer: {
-        flex: 1,
-        top: 2.5,
+        flex: -1,
+        minWidth: 100,
+        minHeight: 100,
+        marginVertical: 5,
         justifyContent: 'center',
         textAlign: "center",
         alignItems: 'center',
@@ -93,11 +107,6 @@ export default StyleSheet.create({
     searchInput: {
         height: 40, 
         backgroundColor: 'white'
-    },
-
-    container: {
-        flex: 1,
-        backgroundColor: '#e6df44',
     },
 
     contentContainer: {

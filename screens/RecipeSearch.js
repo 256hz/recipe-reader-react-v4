@@ -37,9 +37,8 @@ export default class RecipeSearch extends React.Component {
                     />
                     <Button
                         onPress={_ => this.submitSearch(this.state.text)}
+                        style={styles.navButton}
                         title={"Search"}
-                        color={"#7caa2d"}
-                        width={10}
                         accessibilityLabel="Search for a Recipe"
                     />
                 </View>
