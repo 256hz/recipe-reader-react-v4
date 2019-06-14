@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import styles from './styles/styles.js'
 
-export default class GetRecipe extends React.Component {
+export default class RecipeSearch extends React.Component {
     constructor(props) {
         super(props)
         this.state={ text: ''}
@@ -26,7 +26,7 @@ export default class GetRecipe extends React.Component {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}>
                 <View>
-                    <Text style={styles.titleText}>Recipe Reader V0.2</Text>
+                    <Text style={styles.titleText}>Recipe Reader V0.4</Text>
                 </View>
                 <View>
                     <TextInput

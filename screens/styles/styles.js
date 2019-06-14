@@ -24,7 +24,7 @@ export default StyleSheet.create({
     resultsTitleText: {
         fontSize: 36,
         textAlign: 'center',
-        marginTop: 25,
+        marginTop: 24,
         color: '#e6df44',
         backgroundColor: "#7caa2d",
     },
@@ -37,6 +37,57 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
         overflow: 'hidden',
+    },
+
+    buttonModal: {
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+
+    buttonFwdBack: {
+        width: 50, 
+        height: 50, 
+        backgroundColor: 'rgba(255,255,255,0.4)',
+        borderRadius: 25,
+        overflow: 'hidden',
+        justifyContent: 'center',
+    },
+
+    ingredList: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        padding: 5,
+        marginTop: 30,
+        borderRadius: 5,
+        overflow: "hidden",
+        backgroundColor: '#ffff99',
+        },
+
+    ingredContainer: {
+        flex: 1,
+        top: 2.5,
+        justifyContent: 'center',
+        textAlign: "center",
+        alignItems: 'center',
+    },
+
+    ingredImg: {
+        height: 100,
+        width: 100,
+        borderRadius: 50,
+        overflow: "hidden",
+    },
+
+    ingredText: {
+        fontSize: 13,
+    },
+
+    stepText: {
+        fontSize: 24,
     },
 
     searchInput: {

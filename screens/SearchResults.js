@@ -5,32 +5,45 @@ import {
   Text,
   View,
   Image,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
-import potato from '../assets/search-results-potato.json'
+// import potato from '../assets/search-results-potato.json'
 import styles from './styles/styles.js'
-// import { ScrollView } from 'react-native-gesture-handler';
 
 const api = 'https://recipe-reader-rails.herokuapp.com/api/v1/'
 
 export default class SearchResults extends React.Component {
   constructor(props) {
     super(props)
+    this.state={
+      response: {},
+    }
+    let query = this.props.navigation.state.params.text.toLowerCase()
+    this.search(query)
   }
 
-  search = () => {
+  search = (query) => {
     fetch(api + 'spoon/' + query)
       .then( res => res.json() )
-      .then( json => {return json})
+      .then( json => {
+        console.log("search: ",{json})
+        this.setState({response: json})
+      })
   }
   
   submitBack = () => {
     this.props.navigation.navigate('Search')
   }
 
+  showRecipe = (id) => {
+    this.props.navigation.navigate('Show', {id: id})
+  }
+
   render() {
     // const { navigation } = this.props
     let query = this.props.navigation.state.params.text.toLowerCase()
+    let potato = this.state.response
     // const response = search(query)
     return (
       <View
@@ -40,13 +53,12 @@ export default class SearchResults extends React.Component {
             <Text style={styles.resultsTitleText}>Results for {query}: </Text>
           </View>
           <ScrollView>
-            {Object.keys(potato).map( (recipe, index) => {
-              return <View style={styles.recipeCard} key={recipe + index}>
-                <Text>{recipe}</Text>
-                <Text>{potato[recipe]['id']}</Text>
-                <Image style={{width : 312, height: 231}} source={{uri: potato[recipe]['image_url']}} />
-                <Text>Ready in {potato[recipe]['readyInMinutes']} min</Text>
-              </View>
+            {Object.keys(potato).map( (title, index) => {
+              let id = potato[title]['id']
+              return <TouchableOpacity style={styles.recipeCard} onPress={_ => this.showRecipe(id)} key={title + index}>
+                <Text>{title}</Text>
+                <Image style={{width : 312, height: 231}} source={{uri: potato[title]['image_url']}} />
+              </TouchableOpacity>
             })}
           </ScrollView>
           <View>
@@ -64,3 +76,4 @@ export default class SearchResults extends React.Component {
 }
 
 
+// <Text>Ready in {potato[recipe]['readyInMinutes']} min</Text>
