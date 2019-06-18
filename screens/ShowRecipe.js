@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import ButtonModal from '../components/ButtonModal'
+import Loading from '../components/Loading'
 import styles from './styles/styles.js'
 
 const api = 'https://recipe-reader-rails.herokuapp.com/api/v1/'
@@ -20,44 +21,55 @@ export default class ShowRecipe extends React.Component {
     this.state = {
       steps: {},
       step: {},
-      stepIndex: 2,
+      stepIndex: 0,
       sentences: "",
       sentenceIndex: 0,
       isLoading: true,
+      modalVisible: true,
     }
   }
 
   componentDidMount() {
-    // let id = this.props.navigation.state.params.id
-    let id = 11021
+    let id = this.props.navigation.state.params.id
+    // let id = 224260
     console.log({id})
-    this.getRecipe(id)
+    this.getSteps(id)
   }
 
-  getRecipe = (id) => {
-    fetch(api + 'recipes/' + id)
+  componentWillUnmount() {
+    this.setState({modalVisible: false})
+    return true
+  }
+
+  getSteps = (id) => {
+    fetch(api + 'recipes/' + id + '/steps')
       .then( res => res.json() )
       .then( json => {
-        // console.log("show:", json)
+        let sentences = json[0].text.split(".").filter(s => s != "")
         this.setState({
           steps: json,
           step: json[0],
-          sentences: json[0].text.split(".").filter(s => s != ""),
-          sentence: json[0].text.split(".").filter(s => s != "")[0],
+          sentences: sentences,
+          sentence: sentences[0],
           isLoading: false
         })
       })
+      .catch( console.log )
   }
  
   submitBack = () => {
     this.props.navigation.navigate('Search')
   }
 
+  getSentences = (step) => {
+    return this.state.steps[step].text.split(".").filter(s => s != "")
+  }
+
   sentenceNext = () => {
     if (this.state.sentenceIndex < this.state.sentences.length - 1) {
       this.setState({sentenceIndex: this.state.sentenceIndex + 1})
     } else if (this.state.sentenceIndex === this.state.sentences.length - 1 && this.state.stepIndex < this.state.steps.length - 1) {
-      let sentences = this.state.steps[this.state.stepIndex + 1].text.split(".").filter(s => s != "")
+      let sentences = this.getSentences(this.state.stepIndex + 1)
       this.setState({
         sentences: sentences,
         sentenceIndex: 0,
@@ -73,7 +85,7 @@ export default class ShowRecipe extends React.Component {
     if (this.state.sentenceIndex > 0) {
       this.setState({sentenceIndex: this.state.sentenceIndex - 1})
     } else if (this.state.sentenceIndex === 0 && this.state.stepIndex > 0) {
-      let sentences = this.state.steps[this.state.stepIndex - 1].text.split(".").filter(s => s != "")
+      let sentences = this.getSentences(this.state.stepIndex - 1)
       this.setState({
         sentences: sentences,
         sentenceIndex: sentences.length - 1,
@@ -92,29 +104,33 @@ export default class ShowRecipe extends React.Component {
       let sentence = this.state.sentences[this.state.sentenceIndex]
       return( 
         <View style={styles.container}> 
-          <ButtonModal sentencePrev={this.sentencePrev} sentenceNext={this.sentenceNext} />
+
+          <ButtonModal 
+            sentencePrev={this.sentencePrev} 
+            sentenceNext={this.sentenceNext} 
+            submitBack={this.submitBack}
+          />
+
           <ScrollView style={{margin: 5}}>
             <View style={styles.ingredList}>
-              {this.state.step.ingredients.map( i => { 
+              {this.state.step.ingredients.map( i, index => { 
                 return( 
-                  <View style={styles.ingredContainer} key={i.image_url}> 
+                  <View style={styles.ingredContainer} key={i.image_url+index}> 
                     <Image source={{uri: ingredUrl + i.image_url}} style={styles.ingredImg} />
                     <Text style={styles.ingredText}>{i.us_amount} {i.us_unit} {i.name}</Text>
                   </View>
                 )
               })}
             </View>
-            <Text style={styles.stepText}>{sentence + '.'}</Text>
           </ScrollView>
 
-          <View>
-            <Button
-              onPress={this.submitBack}
-              title={"Back"}
-              style={styles.navButton}
-              accessibilityLabel="Back"
-            />
+          <View style={{height:"auto"}}>
+            <View style={{...styles.ingredList}}>
+              <Text style={styles.stepText}>{sentence}{sentence.slice(-1) === "." ? null : "."}</Text>
+            </View>
+            
           </View>
+
         </View>
       )
     }

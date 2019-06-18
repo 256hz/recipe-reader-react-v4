@@ -1,9 +1,10 @@
 import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
-import RecipeSearch from '../screens/RecipeSearch.js';
-import SearchResults from '../screens/SearchResults.js';
-import ShowRecipe from '../screens/ShowRecipe.js';
+import RecipeSearch   from '../screens/RecipeSearch.js';
+import SearchResults  from '../screens/SearchResults.js';
+import ShowIngredients     from '../screens/ShowIngredients.js';
+import ShowRecipe     from '../screens/ShowRecipe.js';
 
 // class AuthLoadingScreen extends React.Component {
 //   constructor() {
@@ -33,12 +34,13 @@ export default createAppContainer(
   createSwitchNavigator({
     // You could add another route here for authentication.
     // Read more at https://reactnavigation.org/docs/en/auth-flow.html
-    Search: RecipeSearch,
-    Results: SearchResults,
-    Show: ShowRecipe
+    Search:       RecipeSearch,
+    Results:      SearchResults,
+    Ingredients:  ShowIngredients,
+    Show:         ShowRecipe,
   },
   {
-    initialRouteName: 'Show'
+    initialRouteName: 'Ingredients'
   })
 );
 

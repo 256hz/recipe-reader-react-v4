@@ -1,20 +1,34 @@
 import React from 'react';
-import { StyleSheet, Platform, View } from 'react-native';
-import AppNavigator from './navigation/AppNavigator.js'
+import * as Font from 'expo-font'
+import { Platform, View } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-      <AppNavigator />
-    </View>
-  );
+import AppNavigator from './navigation/AppNavigator.js'
+import Loading from './components/Loading'
+import styles from './screens/styles/styles'
+
+export default class App extends React.Component {
+  constructor() {
+    super()
+    this.state = { loading: true }
+  }
+
+  async componentWillMount() {
+    await Font.loadAsync({
+        'Title'         : require('./assets/fonts/UniversLtStd-LightUltraCn.ttf'),
+        'Body'          : require('./assets/fonts/UniversLtStd-LightCn.ttf'),
+    })
+    this.setState({ loading: false })
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});
- 
+  render() {
+    return (
+      <View style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        { this.state.loading
+          ? <Loading />
+          : <AppNavigator />
+        }
+      </View>
+    );
+  }
+}

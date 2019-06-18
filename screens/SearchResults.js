@@ -8,7 +8,6 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
-// import potato from '../assets/search-results-potato.json'
 import styles from './styles/styles.js'
 
 const api = 'https://recipe-reader-rails.herokuapp.com/api/v1/'
@@ -27,47 +26,51 @@ export default class SearchResults extends React.Component {
     fetch(api + 'spoon/' + query)
       .then( res => res.json() )
       .then( json => {
-        console.log("search: ",{json})
+        // console.log("search: ",{json})
         this.setState({response: json})
       })
+      .catch( console.log )
   }
   
   submitBack = () => {
     this.props.navigation.navigate('Search')
   }
 
-  showRecipe = (id) => {
-    this.props.navigation.navigate('Show', {id: id})
+  showIngredients = (id) => {
+    this.props.navigation.navigate('Ingredients', {id: id})
   }
 
   render() {
-    // const { navigation } = this.props
-    let query = this.props.navigation.state.params.text.toLowerCase()
-    let potato = this.state.response
-    // const response = search(query)
+    const query = this.props.navigation.state.params.text.toLowerCase()
+    const response = this.state.response 
+
     return (
       <View
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
           <View>
-            <Text style={styles.resultsTitleText}>Results for {query}: </Text>
+            <Text style={styles.resultsTitleText}>Results for {query.trim()}:</Text>
           </View>
           <ScrollView>
-            {Object.keys(potato).map( (title, index) => {
-              let id = potato[title]['id']
-              return <TouchableOpacity style={styles.recipeCard} onPress={_ => this.showRecipe(id)} key={title + index}>
-                <Text>{title}</Text>
-                <Image style={{width : 312, height: 231}} source={{uri: potato[title]['image_url']}} />
-              </TouchableOpacity>
+            {Object.keys(response).map( (title, index) => {
+              let id = response[title]['id']
+              return(
+                <TouchableOpacity style={styles.recipeCard} onPress={_ => this.showIngredients(id)} key={title + index}>
+                  <Text style={{fontFamily: 'Body', fontSize: 18}}>{title}</Text>
+                  <Image style={{width : 312, height: 231}} source={{uri: response[title]['image_url']}} />
+                </TouchableOpacity>
+              )
             })}
           </ScrollView>
-          <View>
-            <Button
+          <View style={{alignItems: 'center'}}>
+            <TouchableOpacity
               onPress={this.submitBack}
               title={"Back"}
-              style={styles.navButton}
+              style={styles.buttonNav}
               accessibilityLabel="Back"
-            />
+            >
+              <Text style={styles.buttonText}>BACK</Text>
+            </TouchableOpacity>
           </View>
       </View>
     );
@@ -75,4 +78,4 @@ export default class SearchResults extends React.Component {
 }
 
 
-// <Text>Ready in {potato[recipe]['readyInMinutes']} min</Text>
+// <Text>Ready in {response[recipe]['readyInMinutes']} min</Text>

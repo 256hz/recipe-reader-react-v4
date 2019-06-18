@@ -13,9 +13,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#f2f1ef"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -25,6 +25,6 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
   }
 }
