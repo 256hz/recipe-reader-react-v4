@@ -1,12 +1,30 @@
 import {StyleSheet, Platform} from 'react-native'
 
+const green = "#4fb177"
+const blue = "#498ab8"
+const yellow = "#f8d621"
+const red = "#b40009"
+const lightGrey = '#fefefe'
+
 export default StyleSheet.create({
 
+    buttonBottom: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent: 'space-between',
+        marginVertical: '2%',
+        // marginHorizontal: '1%',
+        height: '8%',
+    },
+
     buttonFwdBack: {
+        margin: 5,
         width: 50, 
         height: 50, 
-        backgroundColor: 'rgba(255,255,255,0.4)',
-        color: "#f8cb03",
+        backgroundColor: green,
+        color: "white",
         borderRadius: 25,
         overflow: 'hidden',
         justifyContent: 'center',
@@ -20,9 +38,9 @@ export default StyleSheet.create({
     },
 
     buttonNav: {
-        backgroundColor: "#4fb177",
-        marginVertical: 10,
-        width: 100,
+        backgroundColor: green,
+        margin: 7,
+        width: 100, 
         justifyContent: "center",
         textAlign: "center",
         height: 50,
@@ -31,14 +49,14 @@ export default StyleSheet.create({
 
     buttonText: {
         fontSize: 30,
-        color: '#fff', //'#f6ff74',
+        color: 'white',
         textAlign: "center",
         fontFamily: "Title",
     },
 
     container: {
         flex: 1,
-        backgroundColor: '#f8d621',
+        backgroundColor: yellow,
     },
 
     contentContainer: {
@@ -50,7 +68,7 @@ export default StyleSheet.create({
         minWidth: 100,
         minHeight: 100,
         maxWidth: 120,
-        marginVertical: 5,
+        margin: 5,
         justifyContent: 'center',
         textAlign: "center",
         alignItems: 'center',
@@ -75,10 +93,11 @@ export default StyleSheet.create({
         justifyContent: "space-evenly",
         flexWrap: 'wrap',
         padding: 5,
-        // marginVertical: 30,
-        borderRadius: 5,
+        // marginTop: 30, 
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
         overflow: "hidden",
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
     },
 
     ingredText: {
@@ -107,8 +126,8 @@ export default StyleSheet.create({
         textAlign: 'center',
         marginTop: 35,
         marginBottom: 10,
-        color: '#fefefe',
-        backgroundColor: "rgb(180,0,9)",
+        color: lightGrey,
+        backgroundColor: red,
         ...Platform.select({
             ios: {
             shadowColor: 'black',
@@ -127,8 +146,8 @@ export default StyleSheet.create({
         fontFamily: 'Title',
         textAlign: 'center',
         marginTop: 24,
-        color: '#fefefe',
-        backgroundColor: "#4fb177",
+        color: lightGrey,
+        backgroundColor: green,
     },
 
     searchInput: {
@@ -142,6 +161,7 @@ export default StyleSheet.create({
         fontSize: 24,
         fontFamily: 'Body',
         textAlign: "center",
+        justifyContent: 'flex-start',
     },
 
     titleText: {
@@ -150,8 +170,8 @@ export default StyleSheet.create({
         textAlign: 'center',
         marginTop: 35,
         marginBottom: 10,
-        color: '#fefefe',
-        backgroundColor: "#4fb177",
+        color: lightGrey,
+        backgroundColor: green,
         ...Platform.select({
             ios: {
             shadowColor: 'black',

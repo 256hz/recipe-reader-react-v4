@@ -1,44 +1,50 @@
-import * as WebBrowser from 'expo-web-browser';
+// import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import {
-  Button,
   Text,
   View,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
-import ButtonModal from '../components/ButtonModal'
+// import ButtonModal from '../components/ButtonModal'
 import Loading from '../components/Loading'
 import styles from './styles/styles.js'
 
 const api = 'https://recipe-reader-rails.herokuapp.com/api/v1/'
 const ingredUrl = 'https://spoonacular.com/cdn/ingredients_250x250/'
+const equipUrl = 'https://spoonacular.com/cdn/equipment_250x250/'
 
 export default class ShowRecipe extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
+      // id: 224260,
+      id: this.props.navigation.state.params.id,
       steps: {},
       step: {},
       stepIndex: 0,
       sentences: "",
       sentenceIndex: 0,
       isLoading: true,
-      modalVisible: true,
     }
   }
 
-  componentDidMount() {
-    let id = this.props.navigation.state.params.id
-    // let id = 224260
-    console.log({id})
-    this.getSteps(id)
+  async componentDidMount() {
+    console.log('ShowRecipe compDidMount, id:', this.state.id)
+    if (this.state.id !== 0) {
+      let show = await Promise
+      .resolve( true )
+      .then( this.getSteps(this.state.id) )
+      .then( this.load() )
+    }
   }
 
-  componentWillUnmount() {
-    this.setState({modalVisible: false})
-    return true
+  load = () => {
+    setTimeout(_ => {
+      this.setState({isLoading: false})
+    }, 500)
   }
 
   getSteps = (id) => {
@@ -51,8 +57,8 @@ export default class ShowRecipe extends React.Component {
           step: json[0],
           sentences: sentences,
           sentence: sentences[0],
-          isLoading: false
         })
+        console.log('state set:', this.state)
       })
       .catch( console.log )
   }
@@ -93,49 +99,81 @@ export default class ShowRecipe extends React.Component {
         stepIndex: this.state.stepIndex - 1,
       })
     } else {
-      return
+      this.props.navigation.navigate('Ingredients', {id: this.state.id})
     }
   }
 
   render() {
     if (this.state.isLoading) {
-      return <Text style={styles.titleText}>Loading...</Text>
+      return <Loading />
     } else {
       let sentence = this.state.sentences[this.state.sentenceIndex]
+      // console.log(this.state)
       return( 
         <View style={styles.container}> 
 
-          <ButtonModal 
-            sentencePrev={this.sentencePrev} 
-            sentenceNext={this.sentenceNext} 
-            submitBack={this.submitBack}
-          />
+          <ScrollView style={{marginTop: 5, marginHorizontal: 5, height: '60%'}}>
+            {this.state.step.ingredients.length > 0
+              ? (<View style={styles.ingredList}>
+                  {this.state.step.ingredients.map( (i, index) => { 
+                    return( 
+                      <View style={styles.ingredContainer} key={i.image_url+index}> 
+                        <Image source={{uri: ingredUrl + i.image_url}} style={styles.ingredImg} />
+                        <Text style={styles.ingredText}>{i.orig_string}</Text>
+                      </View>
+                    )
+                  })}
+                </View>)
+              : (<View style={styles.ingredList}>
+                  {this.state.step.equipment.map( (i, index) => { 
+                    return( 
+                      <View style={styles.ingredContainer} key={i.image_url+index}> 
+                        <Image source={{uri: equipUrl + i.image_url}} style={styles.ingredImg} />
+                        <Text style={styles.ingredText}>{i.name}</Text>
+                      </View>
+                    )
+                  })}
+                </View>)
+            }
+            {this.state.stepIndex === this.state.steps.length -1 
+              && this.state.sentenceIndex == this.state.sentences.length -1
+              && <Text style={styles.stepText}>Enjoy!</Text>
+            }
+          </ScrollView>
 
-          <ScrollView style={{margin: 5}}>
-            <View style={styles.ingredList}>
-              {this.state.step.ingredients.map( i, index => { 
-                return( 
-                  <View style={styles.ingredContainer} key={i.image_url+index}> 
-                    <Image source={{uri: ingredUrl + i.image_url}} style={styles.ingredImg} />
-                    <Text style={styles.ingredText}>{i.us_amount} {i.us_unit} {i.name}</Text>
-                  </View>
-                )
-              })}
+          <ScrollView style={{marginBottom: 5, marginHorizontal: 5, height: '20%'}}>
+            <View style={{minHeight:150}}>
+              <View>
+                <Text style={styles.stepText}>{sentence}{sentence.slice(-1) === ("." || '!' || '?') ? null : "."}</Text>
+              </View>
             </View>
           </ScrollView>
 
-          <View style={{height:"auto"}}>
-            <View style={{...styles.ingredList}}>
-              <Text style={styles.stepText}>{sentence}{sentence.slice(-1) === "." ? null : "."}</Text>
-            </View>
-            
-          </View>
+          <View style={styles.buttonBottom}>
+            <TouchableOpacity style={{...styles.buttonFwdBack}} onPress={this.sentencePrev}>
+              <Text style={{textAlign: 'center', color: 'white'}}>{'<'}</Text>
+            </TouchableOpacity>
 
+            <TouchableOpacity style={styles.buttonNav} onPress={this.submitBack}>
+              <Text style={styles.buttonText}>BACK</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{...styles.buttonFwdBack}} onPress={this.sentenceNext}>
+              <Text style={{textAlign: 'center', color: 'white'}}>{'>'}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )
     }
   }
 }
+
+// <ButtonModal 
+// sentencePrev={this.sentencePrev} 
+// sentenceNext={this.sentenceNext} 
+// submitBack={this.submitBack}
+// />
+
 // <Button onPress={this.sentencePrev} title={'<'} color={"#DDD"} />
 // <Button onPress={this.sentenceNext} title={'>'} color={"#DDD"} />
 

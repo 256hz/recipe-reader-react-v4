@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Recipe Reader React V4",
-    "slug": "react-native-frontend-v4",
+    "name": "Recipe Reader",
+    "slug": "recipe-reader",
     "privacy": "public",
     "sdkVersion": "33.0.0",
     "platforms": [
