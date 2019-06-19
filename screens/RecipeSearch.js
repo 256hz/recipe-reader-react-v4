@@ -9,10 +9,20 @@ export default class RecipeSearch extends React.Component {
         super(props)
         this.state={ 
             text: '', 
-            loading: true,
+            isLoading: true,
         }
     }
 
+    async componentWillMount() {
+        await this.load()
+    }
+
+    load = () => {
+        setTimeout(_ => {
+        this.setState({isLoading: false})
+        }, 500)
+    }
+    
     submitSearch = () => {
         (this.state.text === '')
             ? alert ('Please enter a food to start')
@@ -44,16 +54,18 @@ export default class RecipeSearch extends React.Component {
                         <Text style={styles.buttonText}>SEARCH</Text>
                     </TouchableOpacity>
                     <View style={{marginTop: 50}}/>
-                    <TouchableOpacity
-                        onPress={_ => this.submitSearch(this.state.text)}
-                        style={{...styles.buttonNav, width: 125, backgroundColor: '#a6af24'}}
-                        title={"Search"}
-                        accessibilityLabel="Search for a Recipe"
-                    >
-                        <Text style={{...styles.buttonText, color: "#eee"}}>PASTE URL</Text>
-                    </TouchableOpacity>
+
                 </View>
             </View>
         );
     }
 }
+
+// <TouchableOpacity
+// onPress={_ => this.submitSearch(this.state.text)}
+// style={{...styles.buttonNav, width: 125, backgroundColor: '#a6af24'}}
+// title={"Search"}
+// accessibilityLabel="Search for a Recipe"
+// >
+//  <Text style={{...styles.buttonText, color: "#eee"}}>PASTE URL</Text>
+// </TouchableOpacity>

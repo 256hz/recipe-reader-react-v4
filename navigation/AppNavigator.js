@@ -40,7 +40,7 @@ export default createAppContainer(
     Show:         ShowRecipe,
   },
   {
-    initialRouteName: 'Ingredients'
+    initialRouteName: 'Search'
   })
 );
 
