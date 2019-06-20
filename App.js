@@ -23,7 +23,6 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         { this.state.loading
           ? <Loading />
           : <AppNavigator />
