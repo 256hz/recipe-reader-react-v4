@@ -2,7 +2,8 @@ import {StyleSheet, Platform} from 'react-native'
 
 const green = "#4fb177"
 const blue = "#498ab8"
-const yellow = "#f8d621"
+const yellow = "rgb(248,200,8)"
+// const yellow = "#f8d621"
 const red = "#b40009"
 const lightGrey = '#fefefe'
 
@@ -104,6 +105,12 @@ export default StyleSheet.create({
         fontSize: 18,
         fontFamily: 'Body',
         textAlign: 'center',
+    },
+
+    logo: {
+        width: '100%',
+        height: 'auto',
+        resizeMode: 'contain'
     },
 
     recipeCard: {

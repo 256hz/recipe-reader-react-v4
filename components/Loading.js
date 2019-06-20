@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Modal, Image } from 'react-native'
-import styles from '../screens/styles/styles';
+import styles from '../styles/styles';
 const titleScreen = require('../assets/images/splash.png')
 
 export default class Loading extends React.Component {
