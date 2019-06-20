@@ -14,8 +14,8 @@ export default class App extends React.Component {
 
   async componentWillMount() {
     await Font.loadAsync({
-        'Title'         : require('./assets/fonts/UniversLtStd-LightUltraCn.ttf'),
-        'Body'          : require('./assets/fonts/UniversLtStd-LightCn.ttf'),
+        'Title' : require('./assets/fonts/UniversLtStd-LightUltraCn.ttf'),
+        'Body'  : require('./assets/fonts/UniversLtStd-LightCn.ttf'),
     })
     this.setState({ loading: false })
 }
