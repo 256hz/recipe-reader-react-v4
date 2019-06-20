@@ -4498,6 +4498,11 @@ react-native-invoke@^0.2.0:
   resolved "https://registry.yarnpkg.com/react-native-invoke/-/react-native-invoke-0.2.2.tgz#6aef6d6ab16e44cc08471dd48e846f0df72323c0"
   integrity sha1-au9tarFuRMwIRx3UjoRvDfcjI8A=
 
+react-native-keep-screen-on@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-keep-screen-on/-/react-native-keep-screen-on-1.2.0.tgz#8e243c2f8ab23e4ebee6ec5b880fd2f386c38df7"
+  integrity sha512-YVcHdKQw4vK2hMesS5BJ/3ctGAtAwtfWtaKtUxItA4GOh6V/CCSCLq90doZbNfwfGv447VY4SWwncGXC3et+Dg==
+
 react-native-maps@0.24.2:
   version "0.24.2"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.24.2.tgz#19974f967cb0c2e24dab74ca879118e0932571b2"
