@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Loading from '../components/Loading'
-import styles from './styles/styles.js'
+import styles from '../styles/styles'
 
+const pan = require('../assets/images/pan.png')
 const enjoy = {"id":0, "recipe_id":0, "text": "Enjoy!", "step_no": 99, "spoon_ids": [], "equipment_ids": [] }
 const api = 'https://recipe-reader-rails.herokuapp.com/api/v1/'
 const ingredUrl = 'https://spoonacular.com/cdn/ingredients_250x250/'
@@ -22,6 +23,7 @@ export default class ShowRecipe extends React.Component {
     this.state = {
       // id: 224260,
       id: this.props.navigation.state.params.id,
+      imageUrl: this.props.navigation.state.params.imageUrl,
       steps: {},
       step: {},
       stepIndex: 0,
@@ -32,7 +34,7 @@ export default class ShowRecipe extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('ShowRecipe compDidMount, id:', this.state.id)
+    // console.log('ShowRecipe compDidMount, imageUrl:', this.state.imageUrl)
     if (this.state.id !== 0) {
       let show = await Promise
       .resolve( this.getSteps(this.state.id) )
@@ -81,12 +83,6 @@ export default class ShowRecipe extends React.Component {
         break;
       case 'check':
         return Speech.isSpeakingAsync()
-      case 'pause':
-        Speech.stop()
-        return
-      case 'resume':
-        Speech.stop()
-        return
       case 'stop':
         Speech.stop()
         return
@@ -132,51 +128,79 @@ export default class ShowRecipe extends React.Component {
   render() {
     if (this.state.isLoading) {
       return <Loading />
-    } else {
-      let sentence = this.state.sentences[this.state.sentenceIndex]
+    } else if (this.state.sentenceIndex === this.state.sentences.length - 1 && this.state.stepIndex === this.state.steps.length - 1) {
+      
+      // If on final step, show all done screen
+      // console.log('end triggered, imageUrl:', this.state.imageUrl)
+      let sentence = "You're all done, enjoy!"
       this.speak('check') 
         ? this.speak('stop').then(this.speak('play', sentence))
         : this.speak('play', sentence)
-      // console.log(this.state)
+      return(
+        <View style={{...styles.container, alignContent: 'center', alignItems: 'center'}}>
+          <View style={{height:90}} />
+          <View style={{width:'100%'}}>
+            <Text style={styles.titleText}>You're done - enjoy!</Text>
+          </View>
+          <View style={{height:20}} />
+          <View style={styles.recipeCard}>
+            <Image style={{width: 312, height: 231}} source={{uri: this.state.imageUrl}} />
+          </View>
+          <View style={{height:123}} />
+          <View style={styles.buttonBottom}>
+            <TouchableOpacity style={styles.buttonNav} onPress={this.sentencePrev}>
+              <Text style={styles.buttonText}>BACK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )
+    } else {
+      
+      // Show recipe steps
+      let sentence = this.state.sentences[this.state.sentenceIndex]
+      let ingredients = this.state.step.ingredients
+      this.speak('check') 
+        ? this.speak('stop').then(this.speak('play', sentence))
+        : this.speak('play', sentence)
+      // console.log({ingredients})
       return( 
         <View style={styles.container}> 
 
-          <ScrollView style={{marginTop: 5, marginHorizontal: 5, height: '60%'}}>
-            {this.state.step.ingredients
-              ? (<View style={styles.ingredList}>
-                  {this.state.step.ingredients.map( (i, index) => { 
-                    return( 
-                      <View style={styles.ingredContainer} key={i.image_url+index}> 
-                        <Image source={{uri: ingredUrl + i.image_url}} style={styles.ingredImg} />
-                        <Text style={styles.ingredText}>{i.orig_string}</Text>
-                      </View>
-                    )
-                  })}
-                </View>)
-              : null
-            }
-            {this.state.step.equipment
-              ? (<View style={styles.ingredList}>
-                  {this.state.step.equipment.map( (i, index) => { 
-                    return( 
-                      <View style={styles.ingredContainer} key={i.image_url+index}> 
-                        <Image source={{uri: equipUrl + i.image_url}} style={styles.ingredImg} />
-                        <Text style={styles.ingredText}>{i.name}</Text>
-                      </View>
-                    )
-                  })}
-                </View>)
-              : null
+          {ingredients && ingredients.length > 0 
+            ? (
+                <ScrollView style={{marginTop: 5, marginHorizontal: 5, height: '60%'}}>
+                  <View style={{height:25}}/>
+                  <View style={styles.ingredList}>
+                    {ingredients.map( (i, index) => { 
+                      return( 
+                        <View style={styles.ingredContainer} key={i.image_url+index}> 
+                          <Image source={{uri: ingredUrl + i.image_url}} style={styles.ingredImg} />
+                          <Text style={styles.ingredText}>{i.orig_string}</Text>
+                        </View>
+                      )
+                    })}
+                  </View>
+                </ScrollView>
+              )
+            : (
+                <ScrollView style={{marginTop: 5, marginHorizonal: 5, height: '60%'}}>
+                  <View style={{height:100}} />
+                  <View style={{...styles.ingredList, backgroundColor:"rgb(248,200,8)"}}>
+                    <Image source={pan} style={{height:230, resizeMode:'contain'}} resizeMethod="resize"/>
+                  </View>
+                </ScrollView>
+              )
             }
 
-          </ScrollView>
 
-          <ScrollView style={{marginBottom: 5, marginHorizontal: 5, height: '20%'}}>
-            <View style={{minHeight:150}}>
+          <ScrollView style={{marginBottom: 5, marginHorizontal: 15, height: '20%'}}>
+            <View style={{minHeight: 150}}>
               <View>
-                <Text style={styles.stepText}>{sentence}
+                <View style={{height:10}} />
+                <Text style={styles.stepText}>
+                  {sentence && sentence}
                   {
-                    (sentence.slice(-1) === "." || sentence.slice(-1) ===  '!' || sentence.slice(-1) ===  '?') ? null : "."
+                    sentence && (sentence.slice(-1) === "." || sentence.slice(-1) ===  '!' || sentence.slice(-1) ===  '?') ? null : "."
                   }
                 </Text>
               </View>
@@ -198,7 +222,7 @@ export default class ShowRecipe extends React.Component {
           </View>
         </View>
       )
-    }
+    } 
   }
 }
 

@@ -4,7 +4,7 @@ import { Platform, View } from 'react-native';
 
 import AppNavigator from './navigation/AppNavigator.js'
 import Loading from './components/Loading'
-import styles from './screens/styles/styles'
+import styles from './styles/styles'
 
 export default class App extends React.Component {
   constructor() {
@@ -23,7 +23,6 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         { this.state.loading
           ? <Loading />
           : <AppNavigator />

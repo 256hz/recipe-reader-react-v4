@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Loading from '../components/Loading'
-import styles from './styles/styles.js'
+import styles from '../styles/styles'
 
 const api = 'https://recipe-reader-rails.herokuapp.com/api/v1/'
 const ingredUrl = 'https://spoonacular.com/cdn/ingredients_250x250/'
@@ -25,6 +25,7 @@ export default class ShowRecipe extends React.Component {
       id: this.props.navigation.state.params.id,
       query: this.props.navigation.state.params.query,
       results: this.props.navigation.state.params.results,
+      imageUrl: this.props.navigation.state.params.imageUrl,
       isLoading: true,
     }
   }
@@ -33,8 +34,6 @@ export default class ShowRecipe extends React.Component {
     console.log('id:', this.state.id)
     let data = await Promise
       .resolve( this.getRecipeData(this.state.id) )
-      // .then( _ => this.setState({isLoading: true}))
-      // .then( _ => this.getRecipeData(this.state.id) )
       .then( _ => this.load() )
   }
 
@@ -45,7 +44,7 @@ export default class ShowRecipe extends React.Component {
   }
 
   submitBack = () => {
-    console.log('going back from ingreds, query:', this.state.query)
+    // console.log('going back from ingreds, query:', this.state.query)
     this.props.navigation.navigate('Results', {
       results: this.state.results,
       savedQuery: this.state.query
@@ -53,7 +52,7 @@ export default class ShowRecipe extends React.Component {
   }
 
   submitRead = () => {
-    this.props.navigation.navigate('Show', {id: this.state.id})
+    this.props.navigation.navigate('Show', {id: this.state.id, imageUrl: this.state.imageUrl})
   }
 
   getRecipeData = async(id) => {
@@ -70,10 +69,7 @@ export default class ShowRecipe extends React.Component {
     .then( _ => fetch(api + 'recipes/' + id + '/ingredients') )
     .then( res => res.json() )
     .then( json => {
-      // console.log('json[ingredients]:', json['ingredients'])
-      this.setState({
-        ingredients: json,
-      })
+      this.setState({ ingredients: json })
     })
     .catch( console.log )
   }
@@ -82,7 +78,7 @@ export default class ShowRecipe extends React.Component {
     if (this.state.isLoading) {
       return <Loading />
     } else {
-      console.log('ingredients: got to render()')
+      // console.log('ingredients: got to render()')
       return(
         <View style={styles.container}>
           
@@ -99,7 +95,7 @@ export default class ShowRecipe extends React.Component {
               })}
             </View>
 
-            <Text style={styles.resultsTitleText}>Equipment</Text>
+            <Text style={styles.resultsTitleText}>You'll need:</Text>
             <View style={styles.ingredList}>
               {this.state.equipment.map( (i, index) => { 
                 return( 

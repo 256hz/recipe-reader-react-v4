@@ -1,8 +1,11 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { Text, TextInput, View,} from 'react-native';
+import { Text, TextInput, View, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import styles from './styles/styles.js'
+import styles from '../styles/styles'
+
+const logo = require('../assets/images/logo-title.png')
+const titleScreen = require('../assets/images/splash.png')
+const logoPot = require('../assets/images/logo-pot.png')
 
 export default class RecipeSearch extends React.Component {
     constructor(props) {
@@ -31,13 +34,12 @@ export default class RecipeSearch extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}
-                    contentContainerStyle={styles.contentContainer}>
-                <View style={{marginTop: 100}}/>
-                <View>
-                    <Text style={styles.titleText}>RECIPE READER</Text>
+            <View>
+                <View style={{height:80}} />
+                <View style={{height:120}}>
+                    <Image style={{...styles.logo, height: 125}} source={logo} resizeMethod="resize"/>
                 </View>
-                <View style={{marginTop: 50}}/>
+                <View style={{height:50}} />
                 <View style={{textAlign: "center", alignItems: "center"}}>
                     <TextInput
                         style={styles.searchInput}
@@ -45,6 +47,7 @@ export default class RecipeSearch extends React.Component {
                         placeholder={'What would you like to make?'}
                         value={this.state.text}
                     />
+                    <View style={{height:10}} />
                     <TouchableOpacity
                         onPress={_ => this.submitSearch(this.state.text)}
                         style={styles.buttonNav}
@@ -53,8 +56,8 @@ export default class RecipeSearch extends React.Component {
                     >
                         <Text style={styles.buttonText}>SEARCH</Text>
                     </TouchableOpacity>
-                    <View style={{marginTop: 50}}/>
-
+                    <View style={{height:40}} />                    
+                    <Image source={logoPot} style={{height:'54%', resizeMode:'contain'}} resizeMethod="resize"/>
                 </View>
             </View>
         );
