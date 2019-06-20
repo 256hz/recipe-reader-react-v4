@@ -1,4 +1,4 @@
-// import * as WebBrowser from 'expo-web-browser';
+import * as Speech from 'expo-speech';
 import React from 'react';
 import {
   Text,
@@ -7,10 +7,10 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-// import ButtonModal from '../components/ButtonModal'
 import Loading from '../components/Loading'
 import styles from './styles/styles.js'
 
+const enjoy = {"id":0, "recipe_id":0, "text": "Enjoy!", "step_no": 99, "spoon_ids": [], "equipment_ids": [] }
 const api = 'https://recipe-reader-rails.herokuapp.com/api/v1/'
 const ingredUrl = 'https://spoonacular.com/cdn/ingredients_250x250/'
 const equipUrl = 'https://spoonacular.com/cdn/equipment_250x250/'
@@ -35,8 +35,7 @@ export default class ShowRecipe extends React.Component {
     console.log('ShowRecipe compDidMount, id:', this.state.id)
     if (this.state.id !== 0) {
       let show = await Promise
-      .resolve( true )
-      .then( this.getSteps(this.state.id) )
+      .resolve( this.getSteps(this.state.id) )
       .then( this.load() )
     }
   }
@@ -51,6 +50,7 @@ export default class ShowRecipe extends React.Component {
     fetch(api + 'recipes/' + id + '/steps')
       .then( res => res.json() )
       .then( json => {
+        json.push(enjoy)  
         let sentences = json[0].text.split(".").filter(s => s != "")
         this.setState({
           steps: json,
@@ -58,7 +58,7 @@ export default class ShowRecipe extends React.Component {
           sentences: sentences,
           sentence: sentences[0],
         })
-        console.log('state set:', this.state)
+        // console.log('state set:', this.state)
       })
       .catch( console.log )
   }
@@ -71,7 +71,32 @@ export default class ShowRecipe extends React.Component {
     return this.state.steps[step].text.split(".").filter(s => s != "")
   }
 
+  async speak(action, sentence) {
+    switch (action) {
+      case 'play':
+        if (this.state.sentenceIndex === 0) {
+          Speech.speak("¨.", {language: 'en-GB'})
+        }
+        Speech.speak(sentence, {language: 'en-GB'})
+        break;
+      case 'check':
+        return Speech.isSpeakingAsync()
+      case 'pause':
+        Speech.stop()
+        return
+      case 'resume':
+        Speech.stop()
+        return
+      case 'stop':
+        Speech.stop()
+        return
+      default:
+        return
+    }
+  }
+
   sentenceNext = () => {
+    this.speak('stop')
     if (this.state.sentenceIndex < this.state.sentences.length - 1) {
       this.setState({sentenceIndex: this.state.sentenceIndex + 1})
     } else if (this.state.sentenceIndex === this.state.sentences.length - 1 && this.state.stepIndex < this.state.steps.length - 1) {
@@ -88,6 +113,7 @@ export default class ShowRecipe extends React.Component {
   }
 
   sentencePrev = () => {
+    this.speak('stop')
     if (this.state.sentenceIndex > 0) {
       this.setState({sentenceIndex: this.state.sentenceIndex - 1})
     } else if (this.state.sentenceIndex === 0 && this.state.stepIndex > 0) {
@@ -108,12 +134,15 @@ export default class ShowRecipe extends React.Component {
       return <Loading />
     } else {
       let sentence = this.state.sentences[this.state.sentenceIndex]
+      this.speak('check') 
+        ? this.speak('stop').then(this.speak('play', sentence))
+        : this.speak('play', sentence)
       // console.log(this.state)
       return( 
         <View style={styles.container}> 
 
           <ScrollView style={{marginTop: 5, marginHorizontal: 5, height: '60%'}}>
-            {this.state.step.ingredients.length > 0
+            {this.state.step.ingredients
               ? (<View style={styles.ingredList}>
                   {this.state.step.ingredients.map( (i, index) => { 
                     return( 
@@ -124,7 +153,10 @@ export default class ShowRecipe extends React.Component {
                     )
                   })}
                 </View>)
-              : (<View style={styles.ingredList}>
+              : null
+            }
+            {this.state.step.equipment
+              ? (<View style={styles.ingredList}>
                   {this.state.step.equipment.map( (i, index) => { 
                     return( 
                       <View style={styles.ingredContainer} key={i.image_url+index}> 
@@ -134,17 +166,19 @@ export default class ShowRecipe extends React.Component {
                     )
                   })}
                 </View>)
+              : null
             }
-            {this.state.stepIndex === this.state.steps.length -1 
-              && this.state.sentenceIndex == this.state.sentences.length -1
-              && <Text style={styles.stepText}>Enjoy!</Text>
-            }
+
           </ScrollView>
 
           <ScrollView style={{marginBottom: 5, marginHorizontal: 5, height: '20%'}}>
             <View style={{minHeight:150}}>
               <View>
-                <Text style={styles.stepText}>{sentence}{sentence.slice(-1) === ("." || '!' || '?') ? null : "."}</Text>
+                <Text style={styles.stepText}>{sentence}
+                  {
+                    (sentence.slice(-1) === "." || sentence.slice(-1) ===  '!' || sentence.slice(-1) ===  '?') ? null : "."
+                  }
+                </Text>
               </View>
             </View>
           </ScrollView>
