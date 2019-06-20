@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+// import KeepScreenOn from 'react-native-keep-screen-on'
 import Loading from '../components/Loading'
 import styles from '../styles/styles'
 
@@ -40,6 +41,11 @@ export default class ShowRecipe extends React.Component {
       .resolve( this.getSteps(this.state.id) )
       .then( this.load() )
     }
+    // KeepScreenOn.setKeepScreenOn(true)
+  }
+
+  componentWillUnmount() {
+    // KeepScreenOn.setKeepScreenOn(false)
   }
 
   load = () => {
@@ -66,7 +72,8 @@ export default class ShowRecipe extends React.Component {
   }
  
   submitBack = () => {
-    this.props.navigation.navigate('Search')
+    this.speak('stop')
+    this.props.navigation.navigate('Ingredients', {id: this.state.id})
   }
 
   getSentences = (step) => {
@@ -131,7 +138,6 @@ export default class ShowRecipe extends React.Component {
     } else if (this.state.sentenceIndex === this.state.sentences.length - 1 && this.state.stepIndex === this.state.steps.length - 1) {
       
       // If on final step, show all done screen
-      // console.log('end triggered, imageUrl:', this.state.imageUrl)
       let sentence = "You're all done, enjoy!"
       this.speak('check') 
         ? this.speak('stop').then(this.speak('play', sentence))
@@ -147,9 +153,17 @@ export default class ShowRecipe extends React.Component {
             <Image style={{width: 312, height: 231}} source={{uri: this.state.imageUrl}} />
           </View>
           <View style={{height:123}} />
-          <View style={styles.buttonBottom}>
-            <TouchableOpacity style={styles.buttonNav} onPress={this.sentencePrev}>
+          <View style={{...styles.buttonBottom, width: '100%'}}>
+            <TouchableOpacity style={{...styles.buttonFwdBack}} onPress={this.sentencePrev}>
+              <Text style={{textAlign: 'center', color: 'white'}}>{'<'}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.buttonNav} onPress={this.submitBack}>
               <Text style={styles.buttonText}>BACK</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={{...styles.buttonFwdBack, ...styles.disabled}}>
+              <Text style={{textAlign: 'center', color: 'white'}}>{'>'}</Text>
             </TouchableOpacity>
           </View>
         </View>

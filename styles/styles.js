@@ -64,6 +64,10 @@ export default StyleSheet.create({
         paddingTop: 30,
     },
 
+    disabled: {
+        backgroundColor: "#AAA"
+    },
+
     ingredContainer: {
         flex: -1,
         minWidth: 100,
