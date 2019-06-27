@@ -75,6 +75,11 @@ export default class ShowRecipe extends React.Component {
     this.speak('stop')
     this.props.navigation.navigate('Ingredients', {id: this.state.id})
   }
+ 
+  submitSearch = () => {
+    this.speak('stop')
+    this.props.navigation.navigate('Search')
+  }
 
   getSentences = (step) => {
     return this.state.steps[step].text.split(".").filter(s => s != "")
@@ -158,7 +163,7 @@ export default class ShowRecipe extends React.Component {
               <Text style={{textAlign: 'center', color: 'white'}}>{'<'}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonNav} onPress={this.submitBack}>
+            <TouchableOpacity style={styles.buttonNav} onPress={this.submitSearch}>
               <Text style={styles.buttonText}>BACK</Text>
             </TouchableOpacity>
 
