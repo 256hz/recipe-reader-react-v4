@@ -4,7 +4,7 @@
 
 ### Overview
 
-If you like to cook, you have probably been through the following scenario: you find a recipe on your phone, get in deep, and have to stop, wash your hands, unlock your phone, and scroll around to find the next step, for what seems like hundreds of times.  This mobile app solves that problem!  Find a great recipe and let Recipe Reader lead you through it aloud, line by line.  
+If you like to cook, you've probably found a recipe on your phone, gotten your hands dirty, and had to stop to wash your hands, unlock your phone, and scroll around to find the next step.  This mobile app solves that problem!  Find a great recipe and let Recipe Reader lead you through it aloud, line by line.  
 
 To download the compiled Android app, [use this link](/public/recipe-reader.apk).  
 
