@@ -4,7 +4,9 @@
 
 ### Overview
 
-If you like to cook, you've probably found a recipe on your phone, gotten your hands dirty, and had to stop to wash your hands, unlock your phone, and scroll around to find the next step.  This mobile app solves that problem!  Find a great recipe and let Recipe Reader lead you through it aloud, line by line.  
+So, you like to cook.  You've finally found a recipe you like on your phone.  You're halfway through, you've gotten your hands dirty - now you have to stop, wash your hands, unlock your phone, and scroll around to find the next step!  You'll have to do this dozens of time.
+
+Friends, this mobile app solves that problem!  Find a great recipe and let Recipe Reader lead you through it aloud, line by line.  
 
 To download the compiled Android app, [use this link](/public/recipe-reader.apk).  
 
@@ -26,7 +28,7 @@ I am adding a number of features, including:
 - Speech-to-Text, also with Google Cloud
   - Voice control: next/previous step
 - Search filters
-- Tumbler(not Tumblr)-style step navigation
+- Tumbler (with an 'e', not Tumblr) step navigation
 - Speech on/off control
 
 ### Thanks!
